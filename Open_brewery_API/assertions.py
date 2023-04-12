@@ -34,10 +34,10 @@ class Assertions:
 
         for val in response_as_dict:
             if action == "equal":
-                assert response_as_dict[name] == expected_value, f"Incorrect key value {response_as_dict[name]}." \
+                assert val[name].lower() == expected_value, f"Incorrect key value {val[name]}." \
                                                                  f"Expected value: {expected_value}"
             elif action == "contains":
-                assert expected_value in response_as_dict[name], f"Incorrect key value {response_as_dict[name]}." \
+                assert expected_value in val[name].lower(), f"Incorrect key value {val[name]}." \
                                                                  f"Expected to contain: {expected_value}"
 
 

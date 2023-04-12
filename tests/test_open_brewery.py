@@ -16,18 +16,18 @@ class TestOpenBrewery:
         Assertions.assert_code_status(response, 200)
         Assertions.validate_schemas(response, brewery_schema)
 
-    @pytest.mark.parametrize("city", ["San Diego","Austin", "Norman"])
+    @pytest.mark.parametrize("city", ["San Diego", "Austin", "Norman"])
     def test_list_breweries_by_city(self, city):
-        params = {"city": city}
-        response = requests.request("GET", URL, params=params)
+        params = {"by_city": city}
+        response = requests.get(URL, params=params)
         Assertions.assert_code_status(response, 200)
         Assertions.validate_schemas(response, brewery_schema)
-        Assertions.assert_key_values(response, "city", city, "equal")
+        Assertions.assert_key_values(response, "city", city, "contains")
 
     @pytest.mark.parametrize("name", ["brewerie", "coop", "beer"])
     def test_list_breweries_by_name(self, name):
-        params = {"name": name}
-        response = requests.request("GET", URL, params=params)
+        params = {"by_name": name}
+        response = requests.get(URL, params=params)
         Assertions.assert_code_status(response, 200)
         Assertions.validate_schemas(response, brewery_schema)
         Assertions.assert_key_values(response, "name", name, "contains")
@@ -38,9 +38,10 @@ class TestOpenBrewery:
                               ("beer", "Norman")
                               ])
     def test_list_breweries_by_name_and_city(self, name, city):
-        params = {"name": name}
-        response = requests.request("GET", URL, params=params)
+        params = {"by_name": name,
+                  "by_city": city}
+        response = requests.get(URL, params=params)
         Assertions.assert_code_status(response, 200)
         Assertions.validate_schemas(response, brewery_schema)
         Assertions.assert_key_values(response, "name", name, "contains")
-        Assertions.assert_key_values(response, "city", city, "equal")
+        Assertions.assert_key_values(response, "city", city, "contains")
